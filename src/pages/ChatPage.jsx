@@ -10,11 +10,20 @@ import {
 import { auth, db } from "../firebase/config";
 import { useEffect, useState } from "react";
 import Message from "../components/Message";
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
 
 const ChatPage = ({ room, setRoom }) => {
   const [messages, setMessages] = useState();
+  const [visible, setVisible] = useState(false);
+  const [input, setInput] = useState("");
+
+  const text = "";
+
   const sendMessage = async (e) => {
     e.preventDefault();
+
+    console.log(input);
 
     const messageCol = collection(db, "message");
 
@@ -29,7 +38,7 @@ const ChatPage = ({ room, setRoom }) => {
       createAt: serverTimestamp(),
     });
 
-    e.target.reset();
+    setInput("");
   };
 
   useEffect(() => {
@@ -63,8 +72,36 @@ const ChatPage = ({ room, setRoom }) => {
         ))}
       </main>
       <form onSubmit={sendMessage}>
-        <input type="text" required placeholder="mesajınızı yazınız" />
-        <button>Gönder</button>
+        <div>
+          <input
+            onChange={(e) => setInput(e.target.value)}
+            value={input}
+            type="text"
+            required
+            placeholder="mesajınızı yazınız"
+          />
+          <button
+            onClick={() => {
+              setVisible(!visible);
+            }}
+            type="button"
+          >
+            <img width={30} src="/emo.png" />
+          </button>
+        </div>
+
+        <div className={visible ? "visib" : "in-visib"}>
+          <Picker
+            data={data}
+            previewPosition="none"
+            onEmojiSelect={(e) => {
+              console.log(e);
+              setInput(input + e.native);
+              setVisible(!visible);
+            }}
+          />
+        </div>
+        <button type="submit">Gönder</button>
       </form>
     </div>
   );
