@@ -4,26 +4,30 @@ Bu proje React ile Firebase kullanarak oluşturulmuş bir Mesajlaşma projesidir
 
 Kullanılan kütüphaneler;
 
-- React-icons
+- Firebase
+
+- React
 
 - Emoji-mart
 
--Tailwind
+- React-icons
+
+- SASS
 
 Projenin bize sunduğu özellikler;
 
-- Başlanğıç bölümünde popüler filmleri random gösterme
+- Google hesabı ile uygulamaya giriş
 
-- Kategoriye göre filmleri listeleme
+- Oda seçme alanından oda seçimi veya çıkış yapma seçeneği
 
-- Film detay sayfası ile filmi bilgileri ve oyuncuları listeliyoruz
+- Mesajlaşma kısmı, Firebase onSnapShot ile verileri sürekli alarak mesajları anlık alma özelliği
 
-- Responsive tasarım ile farklı ekran boyutlarına uygunluk
+- Emoji-Mart ile emojileri kullanma özelliği
 
 <h2>Kullanılan Diller</h2>
 
-Bu projede React, Redux Redux-Thunk kullanılmıştır
+Bu projede React kullanılmıştır.
 
 <h2>Ekran Videosu</h2>
 
-![](netflix.gif)
+![](chat.gif)
