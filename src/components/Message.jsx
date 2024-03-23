@@ -1,8 +1,13 @@
 import { auth } from "../firebase/config";
 
-const Message = ({ data }) => {
+const Message = ({ data, handleDelete }) => {
   if (auth.currentUser?.uid === data.author.id) {
-    return <div className="msg-user">{data.text}</div>;
+    return (
+      <div className="msg-user">
+        <button onClick={() => handleDelete(data.id)}>Sil</button>
+        <span>{data.text}</span>
+      </div>
+    );
   }
 
   return (

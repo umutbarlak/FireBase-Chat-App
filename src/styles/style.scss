@@ -197,10 +197,27 @@ button {
 }
 
 .msg-user {
-  background: #f99417;
-  border-radius: 10px 10px 0 10px;
-  padding: 4px 8px;
+  display: flex;
   align-self: flex-end;
+  transition: all 3s;
+
+  &:hover button {
+    display: block;
+  }
+
+  button {
+    padding: 4px 8px;
+    border-radius: 6px;
+    margin-right: 5px;
+    display: none;
+    background: red;
+  }
+
+  span {
+    background: #ec8816e2;
+    border-radius: 10px 10px 0 10px;
+    padding: 4px 8px;
+  }
 }
 
 .msg-other {

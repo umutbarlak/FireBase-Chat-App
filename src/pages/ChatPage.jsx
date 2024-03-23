@@ -6,9 +6,11 @@ import {
   query,
   where,
   orderBy,
+  doc,
+  deleteDoc,
 } from "firebase/firestore";
 import { auth, db } from "../firebase/config";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Message from "../components/Message";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
@@ -18,12 +20,14 @@ const ChatPage = ({ room, setRoom }) => {
   const [visible, setVisible] = useState(false);
   const [input, setInput] = useState("");
 
-  const text = "";
+  console.log(messages);
+
+  const mainRef = useRef(null);
 
   const sendMessage = async (e) => {
     e.preventDefault();
 
-    console.log(input);
+    console.log(e.target[0].value);
 
     const messageCol = collection(db, "message");
 
@@ -39,6 +43,7 @@ const ChatPage = ({ room, setRoom }) => {
     });
 
     setInput("");
+    setVisible(false);
   };
 
   useEffect(() => {
@@ -53,11 +58,23 @@ const ChatPage = ({ room, setRoom }) => {
     onSnapshot(q, (snapshot) => {
       const tempMsg = [];
       snapshot.docs.forEach((doc) => {
-        tempMsg.push(doc.data());
+        tempMsg.push({ ...doc.data(), id: doc.id });
       });
       setMessages(tempMsg);
     });
   }, []);
+
+  useEffect(() => {
+    if (messages) {
+      mainRef.current.scrollTop = mainRef.current.scrollHeight;
+    }
+  }, [messages]);
+
+  const handleDelete = async (message) => {
+    const messageRef = doc(db, "message", message);
+
+    await deleteDoc(messageRef).then((res) => console.log(res));
+  };
 
   return (
     <div className="chat-page">
@@ -66,9 +83,9 @@ const ChatPage = ({ room, setRoom }) => {
         <p>{room}</p>
         <button onClick={() => setRoom(null)}>Farklı Oda</button>
       </header>
-      <main>
+      <main ref={mainRef}>
         {messages?.map((data, i) => (
-          <Message data={data} key={i} />
+          <Message handleDelete={handleDelete} data={data} key={i} />
         ))}
       </main>
       <form onSubmit={sendMessage}>
@@ -95,9 +112,7 @@ const ChatPage = ({ room, setRoom }) => {
             data={data}
             previewPosition="none"
             onEmojiSelect={(e) => {
-              console.log(e);
               setInput(input + e.native);
-              setVisible(!visible);
             }}
           />
         </div>
